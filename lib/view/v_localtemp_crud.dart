@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:admin_crud_flutter/dialog/D_AddPlace.dart';
 
-class MyHomePage extends StatefulWidget {
+class Localtemp extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LocaltempState createState() => _LocaltempState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  List<String> titles = [
+class _LocaltempState extends State<Localtemp> {
+  List<String> countries = [
     'indonesia',
     'bali',
     'eropa',
@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Admin CRUD')),
+      appBar: AppBar(title: Text('Localtemp CRUD')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               DialogUtils.showCustomDialog(context, onSubmit: (country) {
                 setState(() {
-                  titles.insert(titles.length, country);
+                  countries.insert(countries.length, country);
                 });
               });
             },
@@ -38,22 +38,23 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
               child: ListView.builder(
-                  itemCount: titles.length,
+                  itemCount: countries.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Row(
                           children: [
-                            Expanded(child: Text(titles[index])),
+                            Expanded(child: Text(countries[index])),
                             Padding(
                                 padding: EdgeInsets.only(right: 8),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // final snackBar =
-                                    // SnackBar(content: Text(titles[index]));
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showSnackBar(snackBar);
+                                    DialogUtils.showCustomDialog(context, name: countries[index],onSubmit: (country) {
+                                      setState(() {
+                                        countries[index] = country;
+                                      });
+                                    });
                                   },
                                   child: Text("Edit"),
                                 )),
@@ -64,12 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Colors.red)),
                               onPressed: () {
                                 setState(() {
-                                  titles.removeAt(index);
+                                  countries.removeAt(index);
                                 });
-
-                                // final snackBar =
-                                // SnackBar(content: Text(titles[index]));
-                                // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               },
                               child: Text("Delete"),
                             ),

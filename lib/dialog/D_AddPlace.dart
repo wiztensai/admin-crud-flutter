@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DialogUtils {
   static void showCustomDialog(BuildContext context,
-      {@required Function onSubmit}) {
+      {String name = "", @required Function onSubmit}) {
     final _formKey = GlobalKey<FormState>();
 
     String country = "";
@@ -25,6 +25,7 @@ class DialogUtils {
                       child: Text("Add Place"),
                     ),
                     TextFormField(
+                        initialValue: name,
                         decoration: InputDecoration(
                           hintText: "Isi nama tempat disini",
                           labelText: "Nama Tempat",
