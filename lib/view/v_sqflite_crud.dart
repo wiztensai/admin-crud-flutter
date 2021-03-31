@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:admin_crud_flutter/dialog/d_crud_place.dart';
 import 'dart:async';
 
-import 'package:admin_crud_flutter/helper/helper_db_country.dart';
+import 'package:admin_crud_flutter/database/db_country.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +16,7 @@ class SqfliteCrud extends StatefulWidget {
 
 class _SqfliteCrudState extends State<SqfliteCrud> {
 
-  DbHelperCountry dbHelper = DbHelperCountry();
+  DbCountry dbCountry = DbCountry();
   bool isFirstInit = false;
   List<Country> countries = [];
 
@@ -26,7 +26,7 @@ class _SqfliteCrudState extends State<SqfliteCrud> {
 
     if(isFirstInit == false || isFirstInit == null) {
       for(int i = 0; i<initCountry.length;i++) {
-        dbHelper.insertWithId(initCountry[i]);
+        dbCountry.insertWithId(initCountry[i]);
       }
 
       preferences.setBool(CST.IS_FIRST_INIT_B, true);
@@ -54,7 +54,7 @@ class _SqfliteCrudState extends State<SqfliteCrud> {
             onPressed: () {
               DialogUtils.showCustomDialog(context, onSubmit: (country) {
                 setState(() {
-                  dbHelper.insert({"name":country});
+                  dbCountry.insert({"name":country});
                   updateListView();
                 });
               });
@@ -77,7 +77,7 @@ class _SqfliteCrudState extends State<SqfliteCrud> {
                                   onPressed: () {
                                     DialogUtils.showCustomDialog(context, name: countries[index].name,onSubmit: (country) {
                                       setState(() {
-                                        dbHelper.update(Country(countries[index].id, country));
+                                        dbCountry.update(Country(countries[index].id, country));
                                         updateListView();
                                       });
                                     });
@@ -91,7 +91,7 @@ class _SqfliteCrudState extends State<SqfliteCrud> {
                                       Colors.red)),
                               onPressed: () {
                                 setState(() {
-                                  dbHelper.delete(countries[index].id);
+                                  dbCountry.delete(countries[index].id);
                                   updateListView();
                                 });
                               },
@@ -108,20 +108,17 @@ class _SqfliteCrudState extends State<SqfliteCrud> {
   }
 
   void addContact(Country country) async {
-    int result = await dbHelper.insertWithId(country);
+    int result = await dbCountry.insertWithId(country);
     if (result > 0) {
       updateListView();
     }
   }
 
   void updateListView() {
-    final Future<Database> dbFuture = dbHelper.initDb();
-    dbFuture.then((database) {
-      Future<List<Country>> contactListFuture = dbHelper.getCountry();
-      contactListFuture.then((contactList) {
-        setState(() {
-          this.countries = contactList;
-        });
+    Future<List<Country>> contactListFuture = dbCountry.getCountry();
+    contactListFuture.then((contactList) {
+      setState(() {
+        this.countries = contactList;
       });
     });
   }
