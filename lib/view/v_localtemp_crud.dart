@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:admin_crud_flutter/dialog/D_AddPlace.dart';
+import 'package:admin_crud_flutter/dialog/d_crud_place.dart';
 
 class Localtemp extends StatefulWidget {
   @override
